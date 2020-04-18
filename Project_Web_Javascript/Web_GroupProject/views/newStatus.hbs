@@ -1,0 +1,40 @@
+<div class="jumbotron pt-1 pb-3" >
+    <h1 class="display-2">Calend Me</h1>
+
+    <h3 >A cool app to plan nice stuff</h3>
+
+    <hr class="my-4">
+
+    <div class="d-inline-block">
+        <p class="lead"> Welcome {{user.firstname}} {{user.name}} </p>
+    </div>
+
+    <div class="d-inline-block">
+        <form action="/calendme/auth/logout" method="post">
+            <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt"> Sign out</i></button>
+        </form>
+    </div>
+
+</div>
+
+<nav class="navbar navbar-expand jumbotron pt-1 pb-1 pl-1";>
+
+    <a href="/calendme" class="btn btn-link">Home</a>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+    <span class="btn btn-link"> New Status </span>
+
+</nav>
+
+<h3>Create Status</h3>
+
+<form action="/calendme/newStatus" method="post">
+    <div class="form-group">
+        <label>Name:</label>
+        <input type="text" required class="form-control" name="name" placeholder="Enter name">
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

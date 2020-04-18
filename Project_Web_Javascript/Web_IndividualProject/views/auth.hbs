@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <div class="flex-rectangle";
+             style="width:100%;height:150px;border:none;background:whitesmoke">
+            <div class="text"; style="font-size:50px">&nbsp Calend-me</div>
+            <div class="text"; style="font-size:12.5px">&nbsp &nbsp &nbsp &nbsp A cool app to plan nice stuff</div>
+        </div>
+</head>
+
+<body>
+
+    <div style="width:100%;height:20px"></div>
+    <div style="margin:10px">
+        <form action="/auth.form" method="post">
+            <div id="alert">
+                <p id="alert_information"></p>
+            </div>
+            <div class="form-group" >
+                <input type="text" class="form-control" name="login" placeholder="login"
+                       style="background-color: lightgoldenrodyellow; width:100%">
+            </div>
+            <div style="width:100%;height:15px"></div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="password"
+                       style="background-color: lightgoldenrodyellow; width:100%">
+            </div>
+            <div style="width:100%;height:15px"></div>
+            <button type="submit" class="btn btn-primary" style="background-color: cornflowerblue ">
+                <div style="color: white">Submit</div>
+            </button>
+        </form>
+    </div>
+    <div style="width:100%;height:5px"></div>
+    <div>
+        <hr style="border: 0.5px solid lightgrey">
+    </div>
+    <div class="text"; style="font-size:10px; margin:10px">Copyright 2019 ISAE SUPAERO</div>
+</body>
+</html>
+
+<script>
+    if ({{loginstat}} == 1) {
+        document.getElementById("alert_information").innerHTML = "username/password incorrect!";
+        document.getElementById("alert_information").style.color = "red";
+        document.getElementById("alert").style.textAlign = "left";
+    }
+</script>
+
+
+
+

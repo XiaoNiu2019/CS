@@ -1,0 +1,177 @@
+<div class="jumbotron pt-1 pb-3" >
+    <h1 class="display-2">Calend Me</h1>
+
+    <h3 >A cool app to plan nice stuff</h3>
+
+    <hr class="my-4">
+
+    <div class="d-inline-block">
+        <p class="lead"> Welcome {{user.firstname}} {{user.name}} </p>
+    </div>
+
+    <div class="d-inline-block">
+        <form action="/calendme/auth/logout" method="post">
+            <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt"> Sign out</i></button>
+        </form>
+    </div>
+
+</div>
+
+<nav class="navbar navbar-expand jumbotron pt-1 pb-1 pl-1">
+
+    <a href="/calendme" class="btn btn-link">Home</a>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+    <span class="btn btn-link"> {{project.name}} </span>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+</nav>
+
+<div class="d-inline-block">
+    <h2>{{project.name}}</h2>
+</div>
+
+    <div class="d-inline-block" style="right:150px; position:absolute" >
+        <button onclick="toggle_visibility('filters_sorter'); arrow('arrow');" style="border: 2px; background-color: white; color:black; border-color: dodgerblue " class="btn badge badge-warning"><h4><i style="position: relative; top:-3px; font-size:14px" id="arrow" class="fa fa-caret-right"></i> Filters and sorter </h4></button>
+    </div>
+
+    <form  style="display: none"  action="/calendme/project/filtered-sorted" method="post" id = "filters_sorter">
+        <div class="form-group" style="display:inline-block">
+            <label> Sort by:</label>
+            <select class="form-control" name="sorter" id = "sorter" >
+                <option value="default">Default</option>
+                <option value="name">Tasknames</option>
+                <option value="assignee">Assignees</option>
+                <option value="status">Status</option>
+                <option value="start_date">Start dates</option>
+                <option value="due_date">Due dates</option>
+            </select>
+        </div >
+        <div class="form-group" style="display:inline-block">
+            <label>Assignee filter:</label>
+            <select class="form-control" name="assignee_selected" id = "assigneeselected">
+                <option value="All">All</option>
+                {{#each project.members}}
+                <option value="{{this._id}}"> {{this.firstname}} {{this.name}} </option>
+            {{/each}}
+        </select>
+    </div >
+    <div class="form-group" style="display:inline-block">
+        <label>Status filter:</label>
+        <select class="form-control" name="status_selected" id = "statusselected">
+            <option value="All">All</option>
+            {{#each statuslist}}
+                <option value="{{this._id}}"> {{this.name}} </option>
+            {{/each}}
+        </select>
+    </div >
+    <div class="form-group" style="display:inline-block">
+        <label>Start date filter:</label>
+        <select class="form-control" name="start_before_after" selected="All">
+            <option value="All">All</option>
+            <option value="Before">Before</option>
+            <option value="After">After</option>
+        </select>
+        <input type="date" class="form-control" name="start_date_selected">
+    </div>
+    <div class="form-group" style="display:inline-block">
+        <label>Due date filter:</label>
+        <select class="form-control" name="due_before_after" selected="All">
+            <option value="All">All</option>
+            <option value="Before">Before</option>
+            <option value="After">After</option>
+        </select>
+        <input type="date" class="form-control" name="due_date_selected">
+    </div>
+    <input type="hidden" name="project" value={{project._id}}>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+<p></p>
+
+{{#if projectprogress}}
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{projectprogress}}%" aria-valuenow="{{projectprogress}}" aria-valuemin="0" aria-valuemax="100"><b>{{projectprogress}}%</b></div>
+    </div>
+{{/if}}
+
+
+<p></p>
+
+{{#if (ifIn "admin" user.roles "ok" "")}}
+    <form action="/calendme/project" method="post">
+        <input type="hidden" name="project" value={{project._id}}>
+        <button type="submit" class="btn btn-link"><i class="fas fa-edit"> Edit Project</i></button>
+    </form>
+{{/if}}
+
+<div class="d-inline-block">
+    <form action="/calendme/project/newtask" method="post">
+        <input type="hidden" name="project" value={{project._id}}>
+        <button type="submit" class="btn btn-link mb-2"><i class="fas fa-plus"> Add Task</i></button>
+    </form>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>Task</th>
+        <th>Assignee</th>
+        <th>Start Date</th>
+        <th>Due Date</th>
+        {{#if (ifIn "admin" user.roles "ok" "")}}
+            <th></th>
+        {{/if}}
+    </tr>
+    {{#each tasks}}
+        <tr>
+            <td>
+                <form action="/calendme/project" method="post" >
+                    <input type="hidden" name="task" value={{this._id}}>
+                    <button type="submit" class="btn btn-link">{{this.name}}</button>
+                </form>
+            </td>
+
+            <td><span class="badge {{ifEqual this.assignee._id ../user.login 'badge-success' 'badge-primary'}}">{{this.assignee.firstname}} {{this.assignee.name}}</span></td>
+            <td>{{toLocalDate this.start_date}}</td>
+            <td>{{toLocalDate this.due_date}}</td>
+        {{#if (ifIn "admin" ../user.roles "ok" "")}}
+            <td>
+                <form action="/calendme/project/delete" method="post">
+                    <input type="hidden" name="taskToDelete" value={{this._id}}>
+                    <button type="submit" class="btn btn-link float-right"><i class="fas fa-trash-alt"></i>Delete Task</button>
+                </form>
+            </td>
+        {{/if}}
+        </tr>
+    {{/each}}
+</table>
+
+
+<script>
+    //Function to hide / display a table
+    function toggle_visibility(id) {
+        var obj = document.getElementById(id);
+        if(obj.style.display =='table')
+            obj.style.display ='none';
+        else
+            obj.style.display = 'table';
+    }
+
+
+    //Function to turn the dropdown arrow when clicked on
+    function arrow(id) {
+        var obj= document.getElementById(id);
+        if(obj.classList == 'fa fa-caret-down')
+            obj.classList = 'fa fa-caret-right';
+        else if (obj.classList == 'fa fa-caret-right')
+            obj.classList = 'fa fa-caret-down';
+    }
+</script>

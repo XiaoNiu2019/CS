@@ -1,0 +1,109 @@
+<div class="jumbotron pt-1 pb-3" >
+    <h1 class="display-2">Calend Me</h1>
+
+    <h3 >A cool app to plan nice stuff</h3>
+
+    <hr class="my-4">
+
+    <div class="d-inline-block">
+        <p class="lead"> Welcome {{user.firstname}} {{user.name}} </p>
+    </div>
+
+    <div class="d-inline-block">
+        <form action="/calendme/auth/logout" method="post">
+            <button type="submit" class="btn btn-link"><i class="fas fa-sign-out-alt"> Sign out</i></button>
+        </form>
+    </div>
+
+</div>
+
+<nav class="navbar navbar-expand jumbotron pt-1 pb-1 pl-1">
+
+    <a href="/calendme" class="btn btn-link">Home</a>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+    <form action="/calendme" method="post" >
+        <input type="hidden" name="project" value={{project._id}}>
+        <button type="submit" class="btn btn-link">{{project.name}}</button>
+    </form>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+    <form action="/calendme/project" method="post" >
+        <input type="hidden" name="project" value={{project._id}}>
+        <input type="hidden" name="task" value={{task._id}}>
+        <button type="submit" class="btn btn-link">{{task.name}}</button>
+    </form>
+
+    <span class="navbar-text">
+        /
+    </span>
+
+    <span class="btn btn-link"> edit </span>
+
+</nav>
+
+<h2>{{project.name}}</h2>
+<h3>Modify Task</h3>
+
+<form action="/calendme/task/edit" method="post">
+    <div class="form-group">
+        <label>Name:</label>
+        <input type="text" class="form-control" name="name" value="{{task.name}}">
+    </div>
+    <div class="form-group">
+        <label>Description:</label>
+        <input type="text" class="form-control" name="description" value="{{task.description}}">
+    </div>
+    <div class="form-group">
+        <label>Assignee:</label>
+        <select class="form-control" name="assignee">
+            {{#each project.members}}
+                <option {{ ifEqual this._id ../task.assignee "selected" "" }} value="{{this._id}}"> {{this.firstname}} {{this.name}} </option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Start date:</label>
+        <input type="date" class="form-control" name="start_date" value="{{toISODate task.start_date}}">
+    </div>
+    <div class="form-group">
+        <label>Due date:</label>
+        <input type="date" class="form-control" name="due_date" value="{{toISODate task.due_date}}">
+    </div>
+    <div class="form-group">
+        <label>Status:</label>
+        <select class="form-control" name="status">
+            {{#each statusList}}
+                <option {{ ifEqual this._id ../task.status "selected" "" }} value="{{this._id}}"> {{this.name}} </option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="slider">Progress: <span id="slidevalue"></span>% </label>
+        {{#if task.progress}}
+            <input type="range" class="custom-range form-control" name="progress" step="1" min="0" max="100" id="slider" value="{{task.progress}}">
+        {{else}}
+            <input type="range" class="custom-range form-control" name="progress" step="1" min="0" max="100" id="slider" value="0">
+        {{/if}}
+    </div>
+    <input type="hidden" name="project" value={{project._id}}>
+    <input type="hidden" name="_id" value={{task._id}}>
+    <button type="submit" class="btn btn-primary">Modify</button>
+</form>
+
+<!-- Affichage de la valeur du slider de progress-->
+<script>
+    var slider = document.getElementById("slider");
+    var output = document.getElementById("slidevalue");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+</script>

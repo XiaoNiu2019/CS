@@ -1,0 +1,38 @@
+<h1>Edit task "{{task.name}}"</h1>
+
+
+<form action="/projects/{{project_id}}/edit.post/{{task._id}}" id="modifyTaskForm", method="post">
+    <div class="form-group">
+        <label>Task name:</label>
+        <input type="text" class="form-control" name="name" value="{{task.name}}">
+    </div>
+    <div>
+        <select name="assignee" form="modifyTaskForm" >
+            <label>Assigned to:</label>
+            <option value="5cac811bf91f9f2030bd6dc8">Nathalie Morin</option>
+            <option value="5cac811bf91f9f2030bd6dc9">Jean-Claude Dusse</option>
+            <option value="5cac811bf91f9f2030bd6dca">Gisèle André</option>
+            <option value="5cac811bf91f9f2030bd6dcb">Jérôme Tarayre</option>
+            <option value="5cac811bf91f9f2030bd6dcc">Bernard Morin</option>
+            <option value="5cac811bf91f9f2030bd6dcd">Robert Lespinasse</option>
+        </select>
+    </div>
+    <div>
+        <select name="status" form="modifyTaskForm">
+            <label>Assigned to:</label>
+            <option value="5cac811bf91f9f2030bd6dc5">Nouveau</option>
+            <option value="5cac811bf91f9f2030bd6dc6">En cours</option>
+            <option value="5cac811bf91f9f2030bd6dc7">Terminé</option>
+        </select>
+    </div>
+    <div>
+        <input type="date" form="modifyTaskForm" name="start_date">
+    </div>
+    <div>
+        <input type="date" form="modifyTaskForm" name="due_date">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+
+
