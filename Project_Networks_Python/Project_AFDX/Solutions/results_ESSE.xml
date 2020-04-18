@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<results>
+   <delays>
+      <flow name="AFDX Flow 1">
+         <target name="AFDX Station 2" value="278.56"/>
+      </flow>
+   </delays>
+   <jitters/>
+   <backlogs/>
+   <load>
+      <edge name="AFDX Edge 1">
+         <usage percent="8.54%" type="direct" value="8536000.0"/>
+         <usage percent="0.0%" type="reverse" value="0.0"/>
+      </edge>
+      <edge name="AFDX Edge 2">
+         <usage percent="8.54%" type="direct" value="8536000.0"/>
+         <usage percent="0.0%" type="reverse" value="0.0"/>
+      </edge>
+      <edge name="AFDX Edge 3">
+         <usage percent="8.54%" type="direct" value="8536000.0"/>
+         <usage percent="0.0%" type="reverse" value="0.0"/>
+      </edge>
+      <edge/>
+   </load>
+</results>
